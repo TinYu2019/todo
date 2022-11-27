@@ -12,7 +12,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - run: cd frontend && npm ci
+      - run: cd frontend && npm ci && pwd
           
 
 # Create a workflow
