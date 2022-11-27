@@ -10,11 +10,12 @@ orbs:
 jobs:
   build_frontend:
     executor: node/default
+    working_directory: ~/project/frontend
     steps:
-      - checkout
-      - run: ls -l ~
-      - run: cd frontend && npm ci
-          
+      - checkout:
+          path: ~/project
+      - run: ls -l ./
+      - node/install-packages
 
 # Create a workflow
 workflows:
