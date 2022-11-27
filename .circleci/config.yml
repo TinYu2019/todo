@@ -15,7 +15,7 @@ jobs:
       - checkout:
           path: ~/project
       - run: ls -l ./
-      - node/install-packages
+      - run: npm ci
 
 # Create a workflow
 workflows:
