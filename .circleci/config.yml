@@ -18,7 +18,7 @@ jobs:
       - checkout:
           path: ~/project
       - node/install-packages
-      - node/test
+      - run: npm run test
       - setup_remote_docker
       - docker/check
       - docker/build:
