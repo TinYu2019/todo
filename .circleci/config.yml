@@ -14,6 +14,7 @@ jobs:
       - checkout
       - run: ls -l
       - node/install-packages:
+        app-dir: ./frontend
         pkg-manager: npm
 
 # Create a workflow
