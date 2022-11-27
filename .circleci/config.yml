@@ -18,7 +18,8 @@ jobs:
       - run: npm ci
       - docker/check
       - docker/build:
-          image: tinyu221/repository:my-first-docker-image-with-circleci
+          image: tinyu221/repository
+          tag: my-first-docker-image-with-circleci
 
 # Create a workflow
 workflows:
