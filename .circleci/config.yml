@@ -13,7 +13,7 @@ jobs:
     executor: node/default 
     steps:
       - checkout
-      - run: ls -l /home/circleci/project/frontend
+      - run: ls -l /home/circleci/project/frontend/frontend
       - node/install-packages:
         app-dir: /home/circleci/project/frontend
 
