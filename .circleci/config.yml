@@ -22,10 +22,10 @@ jobs:
       - docker/check
       - docker/build:
           image: tinyu221/repository
-          tag: v1
+          tag: frontend-v1
       - docker/push:
           image: tinyu221/repository
-          tag: v1
+          tag: frontend-v1
 
 # Create a workflow
 workflows:
