@@ -14,7 +14,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-        app-dir: ./frontend
+        app-dir: /home/circleci/project/frontend
 
 # Create a workflow
 workflows:
