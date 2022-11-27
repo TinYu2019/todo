@@ -19,7 +19,7 @@ jobs:
       - docker/check
       - docker/build:
           image: tinyu221/repository
-          tag: my-first-docker-image-with-circleci
+          tag: v1
 
 # Create a workflow
 workflows:
