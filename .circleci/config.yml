@@ -16,6 +16,7 @@ jobs:
           path: ~/project
       - run: ls -l ./
       - run: npm ci
+      - run: npm run test
 
 # Create a workflow
 workflows:
