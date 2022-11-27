@@ -5,17 +5,18 @@ version: 2.1
 # we use the latest version here
 orbs:
   node: circleci/node@5.0.3
-  docker: circleci/docker@2.1.4
 
 # create jobs: Build and test the app
 jobs:
   build_frontend:
     executor: node/default
     working_directory: ~/project/frontend
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout:
           path: ~/project
-      - run: npm ci
+      - node/install-packages
       - docker/check
       - docker/build:
           image: tinyu221/repository
