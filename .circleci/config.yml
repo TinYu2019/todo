@@ -9,7 +9,7 @@ orbs:
 # create jobs: Build and test the app
 jobs:
   build_frontend:
-    executor: node/default 
+    executor: node/default
     steps:
       - checkout
       - node/install-packages:
