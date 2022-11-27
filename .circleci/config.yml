@@ -8,7 +8,8 @@ orbs:
 
 # create jobs: Build and test the app
 jobs:
-  build_and_test:
+  build_frontend:
+    working_directory: ~/frontend
     executor: node/default 
     steps:
       - checkout
@@ -17,9 +18,9 @@ jobs:
 
 # Create a workflow
 workflows:
-  build_test:
+  build_frontend:
     jobs:
-      - build_and_test:
+      - build_frontend:
         filters:
           branches:
             only: main
