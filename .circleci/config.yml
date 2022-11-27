@@ -16,7 +16,7 @@ jobs:
           path: ~/project
       - run: ls -l ./
       - run: npm ci
-      - run: npm run test
+      - run: docker build . -t tinyu221/repository:my-first-docker-image
 
 # Create a workflow
 workflows:
