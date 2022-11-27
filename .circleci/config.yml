@@ -17,7 +17,8 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: npm ci
+      - node/install-packages
+      - setup_remote_docker
       - docker/check
       - docker/build:
           image: tinyu221/repository
