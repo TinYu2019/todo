@@ -13,7 +13,7 @@ jobs:
     executor: node/default
     working_directory: ~/project/frontend
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:18
     steps:
       - checkout:
           path: ~/project
