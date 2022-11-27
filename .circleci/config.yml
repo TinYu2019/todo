@@ -15,9 +15,10 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: ls -l ./
       - run: npm ci
       - docker/check
+      - docker/build:
+          image: tinyu221/repository:my-first-docker-image-with-circleci
 
 # Create a workflow
 workflows:
