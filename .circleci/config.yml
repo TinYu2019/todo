@@ -9,6 +9,7 @@ orbs:
 # create jobs: Build and test the app
 jobs:
   build_frontend:
+    working_directory: /home/circleci/project/frontend
     executor: node/default 
     steps:
       - checkout
