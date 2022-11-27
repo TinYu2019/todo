@@ -12,8 +12,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages:
-        app-dir: /home/circleci/project/frontend
+      - run: cd frontend && npm ci && pwd
           
 
 # Create a workflow
