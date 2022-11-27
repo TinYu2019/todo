@@ -9,11 +9,11 @@ orbs:
 # create jobs: Build and test the app
 jobs:
   build_frontend:
-    working_directory: ~/frontend
     executor: node/default 
     steps:
       - checkout
-      - node/install-packages
+      - node/install-packages:
+        app-dir: /home/circleci/frontend
 
 # Create a workflow
 workflows:
