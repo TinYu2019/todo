@@ -13,8 +13,7 @@ jobs:
     executor: node/default 
     steps:
       - checkout
-      - node/install-packages:
-        app-dir: ~/frontend
+      - node/install-packages
 
 # Create a workflow
 workflows:
