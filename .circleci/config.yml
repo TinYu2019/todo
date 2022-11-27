@@ -5,6 +5,7 @@ version: 2.1
 # we use the latest version here
 orbs:
   node: circleci/node@5.0.3
+  docker: circleci/docker@2.1.4
 
 # create jobs: Build and test the app
 jobs:
@@ -16,7 +17,7 @@ jobs:
           path: ~/project
       - run: ls -l ./
       - run: npm ci
-      - run: docker version
+      - docker/check
 
 # Create a workflow
 workflows:
