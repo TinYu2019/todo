@@ -9,11 +9,12 @@ orbs:
 # create jobs: Build and test the app
 jobs:
   build_frontend:
+    working_directly: 
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
-        app-dir: ~/project/frontend
+        app-dir: ./frontend
 
 # Create a workflow
 workflows:
