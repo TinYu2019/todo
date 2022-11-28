@@ -35,10 +35,10 @@ jobs:
           command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin"
       - run: 
           name: "Stop frontend container"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker stop frontend"
+          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker stop frontend | xargs docker rm"
       - run: 
           name: "Run frontend container"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker run --rm -d -p 9445:3000 --name frontend tinyu221/repository:my-first-docker-image"
+          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker run -d -p 9445:3000 --name frontend tinyu221/repository:my-first-docker-image"
 
 # Create a workflow
 workflows:
