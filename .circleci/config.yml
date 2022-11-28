@@ -15,24 +15,28 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
-      - checkout:
-          path: ~/project
-      - node/install-packages
-      - run: npm run test
-      - setup_remote_docker
-      - docker/check
-      - docker/build:
-          image: tinyu221/repository
-          tag: frontend-v1
-      - docker/push:
-          image: tinyu221/repository
-          tag: frontend-v1
+      # - checkout:
+      #     path: ~/project
+      # - node/install-packages
+      # - run: npm run test
+      # - setup_remote_docker
+      # - docker/check
+      # - docker/build:
+      #     image: tinyu221/repository
+      #     tag: frontend-v1
+      # - docker/push:
+      #     image: tinyu221/repository
+      #     tag: frontend-v1
       - add_ssh_keys:
           fingerprints:
             - "99:14:c2:ce:7e:f9:13:84:11:41:7e:72:bb:f6:b7:8a"
       - run: 
           name: "Nano connect to Dockerhub"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin" 
+          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin"
+      - run: 
+          name: "Stop frontend container"
+          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker stop frontend"
+
 # Create a workflow
 workflows:
   build_frontend:
