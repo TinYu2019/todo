@@ -30,7 +30,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "99:14:c2:ce:7e:f9:13:84:11:41:7e:72:bb:f6:b7:8a"
-          # - ssh  root@125.59.217.57 -p 2443 "docker ps"
+      - run: ssh root@125.59.217.57 -p 2443 "docker ps"
+
 
 # Create a workflow
 workflows:
