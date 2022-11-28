@@ -31,9 +31,8 @@ jobs:
           fingerprints:
             - "99:14:c2:ce:7e:f9:13:84:11:41:7e:72:bb:f6:b7:8a"
       - run: 
-          name: "connect to nano server and list container"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker ps"
-
+          name: "Nano connect to Dockerhub"
+          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin" 
 # Create a workflow
 workflows:
   build_frontend:
