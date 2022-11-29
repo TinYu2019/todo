@@ -11,12 +11,15 @@ orbs:
 jobs:
   # CI
   # build the frontend docker image and push it to dockerhub
-  build_frontend:
+  build:
     executor: node/default
-    working_directory: ~/project/frontend
     # circleci create a container based on the following image. It contains node.
     docker:
       - image: cimg/node:lts
+    parameters:
+      module:
+        type: string
+    working_directory: ~/project/<< parameters.module >>
     steps:
       - checkout:
           path: ~/project
@@ -29,11 +32,11 @@ jobs:
       # build docker image based on the instructions in the Docker file in the working directory
       - docker/build:
           image: $PRIVATE_REPOSITORY
-          tag: frontend-v1
+          tag: << parameters.module >>-v1
       # once the image is built, push to Dockerhub
       - docker/push:
           image: $PRIVATE_REPOSITORY
-          tag: frontend-v1
+          tag: << parameters.module >>-v1
 
   # CD pull the frontend docker image from dockerhub; run it in a new container on remote server
   deploy_frontend:
@@ -59,13 +62,14 @@ jobs:
 workflows:
   frontend:
     jobs:
-      - build_frontend:
+      - build:
+          module: frontend
           filters:
             branches:
               only: main
       - deploy_frontend:
           requires:
-            - build_frontend
+            - build
           filters:
             branches:
               only: main
