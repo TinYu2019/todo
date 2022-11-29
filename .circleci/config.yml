@@ -12,6 +12,7 @@ jobs:
   build_frontend:
     executor: node/default
     working_directory: ~/project/frontend
+    # circleci create a container based on the following image. It contains node.
     docker:
       - image: cimg/node:lts
     steps:
@@ -19,26 +20,34 @@ jobs:
           path: ~/project
       - node/install-packages
       - run: npm run test
+      # start docker engine
       - setup_remote_docker
+      # by default cicleci is looking for environment variables and login to docker: DOCKER_LOGIN, DOCKER_PASSWORD and DOCKER_REPOSITORY precisely 
       - docker/check
+      # build docker image based on the instructions in the Docker file in the working directory
       - docker/build:
-          image: tinyu221/repository
+          image: $PRIVATE_REPOSITORY
           tag: frontend-v1
+      # once the image is built, push to Dockerhub
       - docker/push:
-          image: tinyu221/repository
+          image: $PRIVATE_REPOSITORY
           tag: frontend-v1
+
+      # CD 
+      # for circleci to connect to remote server via SSH. 
+      # it will take our private key from env var and create a file in the container that contains our private key. (format: ed25519)
       - add_ssh_keys:
           fingerprints:
             - "99:14:c2:ce:7e:f9:13:84:11:41:7e:72:bb:f6:b7:8a"
       - run: 
-          name: "Nano connect to Dockerhub"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin"
+          name: "Server connect to Dockerhub"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin"
       - run: 
           name: "Stop frontend container"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker stop frontend | xargs docker rm"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker stop $FRONTEND_DOCKER_CONTAINER_NAME | xargs docker rm"
       - run: 
           name: "Run frontend container"
-          command: ssh root@125.59.217.57 -p 2443 -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" "docker run -d -p 9445:3000 --name frontend tinyu221/repository:frontend-v1"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker run -d -p $FRONTEND_DOCKER_CONTAINER_PORT:3000 --name $FRONTEND_DOCKER_CONTAINER_NAME $PRIVATE_REPOSITORY:frontend-v1"
 
 # Create a workflow
 workflows:
