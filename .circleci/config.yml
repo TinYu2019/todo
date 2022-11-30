@@ -39,9 +39,12 @@ jobs:
           tag: << parameters.module >>-v1
 
   # CD pull the frontend docker image from dockerhub; run it in a new container on remote server
-  deploy_frontend:
+  deploy:
     docker:
       - image: cimg/base:edge
+    parameters:
+      module:
+        type: string
     steps:
       # for circleci to connect to remote server via SSH. 
       # it will take our private key from env var and create a file in the container that contains our private key. (format: ed25519)
@@ -52,11 +55,11 @@ jobs:
           name: "Server connect to Dockerhub"
           command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin"
       - run:
-          name: "Stop frontend container"
-          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker stop $FRONTEND_DOCKER_CONTAINER_NAME | xargs docker rm"
+          name: "Stop << parameters.module >> container"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker stop $<< parameters.module >>_DOCKER_CONTAINER_NAME | xargs docker rm"
       - run:
-          name: "Run frontend container"
-          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker run -d -p $FRONTEND_DOCKER_CONTAINER_PORT:3000 --name $FRONTEND_DOCKER_CONTAINER_NAME $PRIVATE_REPOSITORY:frontend-v1"
+          name: "Run << parameters.module >> container"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker run -d -p $<< parameters.module >>_DOCKER_CONTAINER_PORT:3000 --name $<< parameters.module >>_DOCKER_CONTAINER_NAME $PRIVATE_REPOSITORY:<< parameters.module >>-v1"
 
 # Create a workflow
 workflows:
@@ -64,7 +67,8 @@ workflows:
     jobs:
       - build:
           module: frontend
-      - deploy_frontend:
+      - deploy:
+          module: frontend
           requires:
             - build
           filters:
