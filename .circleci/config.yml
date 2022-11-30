@@ -64,9 +64,6 @@ workflows:
     jobs:
       - build:
           module: frontend
-          filters:
-            branches:
-              only: main
       - deploy_frontend:
           requires:
             - build
