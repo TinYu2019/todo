@@ -68,7 +68,7 @@ workflows:
       - build:
           module: frontend
       - deploy:
-          module: frontend
+          module: FRONTEND
           requires:
             - build
           filters:
