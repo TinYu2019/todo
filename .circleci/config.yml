@@ -55,8 +55,8 @@ jobs:
           name: "Server connect to Dockerhub"
           command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin"
       - run:
-          name: "Stop << parameters.module >> container"
-          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker stop $FRONTEND_DOCKER_CONTAINER_NAME | xargs docker rm"
+          name: "Stop and remove << parameters.module >> container if it exists"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker ps -q --filter "name=$FRONTEND_DOCKER_CONTAINER_NAME" | grep -q . && docker stop $FRONTEND_DOCKER_CONTAINER_NAME && docker rm $FRONTEND_DOCKER_CONTAINER_NAME"
       - run:
           name: "Run << parameters.module >> container"
           command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker run -d -p $FRONTEND_DOCKER_CONTAINER_PORT:3000 --name $FRONTEND_DOCKER_CONTAINER_NAME $PRIVATE_REPOSITORY:<< parameters.module >>-v1"
