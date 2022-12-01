@@ -60,6 +60,9 @@ jobs:
       - run:
           name: "Run << parameters.module >> container"
           command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "docker run -d -p $FRONTEND_DOCKER_CONTAINER_PORT:3000 --name $FRONTEND_DOCKER_CONTAINER_NAME $PRIVATE_REPOSITORY:<< parameters.module >>-v1"
+      - run:
+          name: "Health check"
+          command: ssh $SERVER_SSH_USERNAME@$SERVER_SSH_PUBLIC_IP -p $SERVER_SSH_PORT $SERVER_SSH_OPTIONS "while ! curl --silent --fail localhost:$FRONTEND_DOCKER_CONTAINER_PORT; do sleep 2; done;"
 
 # Create a workflow
 workflows:
